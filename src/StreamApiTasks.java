@@ -83,18 +83,28 @@ public class StreamApiTasks {
     }
 
     static List<Order> ordersAbove(List<Order> orders, double minValue) {
-        // TODO: zadanie 2
-        return List.of();
+        return orders.stream()
+                .filter(order -> order.totalValue() > minValue)
+                .sorted(Comparator.comparingDouble(Order::totalValue).reversed())
+                .toList();
     }
 
     static List<String> uniqueCustomerNames(List<Order> orders) {
-        // TODO: zadanie 3
-        return List.of();
+        return orders.stream()
+                .map(Order::customerName)
+                .distinct()
+                .sorted()
+                .toList();
     }
 
     static List<String> soldProductNames(List<Order> orders) {
-        // TODO: zadanie 4
-        return List.of();
+        return orders.stream()
+                .filter(order -> order.status() != OrderStatus.CANCELLED)
+                .flatMap(order -> order.items().stream())
+                .map(item -> item.product().name())
+                .distinct()
+                .sorted()
+                .toList();
     }
 
     static double totalRevenue(List<Order> orders) {
