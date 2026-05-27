@@ -76,8 +76,10 @@ public class StreamApiTasks {
     }
 
     static List<String> activeOrderIds(List<Order> orders) {
-        // TODO: zadanie 1
-        return List.of();
+            return orders.stream()
+                    .filter(order -> order.status() != OrderStatus.CANCELLED)
+                    .map(Order::id)
+                    .toList();
     }
 
     static List<Order> ordersAbove(List<Order> orders, double minValue) {
