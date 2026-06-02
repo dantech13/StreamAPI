@@ -108,18 +108,25 @@ public class StreamApiTasks {
     }
 
     static double totalRevenue(List<Order> orders) {
-        // TODO: zadanie 5
-        return 0.0;
+        return orders.stream()
+                .filter(order -> order.status() != OrderStatus.CANCELLED)
+                .mapToDouble(Order::totalValue)
+                .sum();
     }
 
     static OptionalDouble averageDeliveredOrderValue(List<Order> orders) {
-        // TODO: zadanie 6
-        return OptionalDouble.empty();
+        return orders.stream()
+                .filter(order -> order.status() == OrderStatus.DELIVERED)
+                .mapToDouble(Order::totalValue)
+                .average();
     }
 
     static Map<OrderStatus, Long> countByStatus(List<Order> orders) {
-        // TODO: zadanie 7
-        return Map.of();
+        return orders.stream()
+                .collect(Collectors.groupingBy(
+                        Order::status,
+                        Collectors.counting()
+                ));
     }
 
     static Map<String, Double> revenueByCategory(List<Order> orders) {
